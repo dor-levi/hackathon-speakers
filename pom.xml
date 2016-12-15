@@ -5,7 +5,7 @@
 
 	<groupId>com.hackathon.speakers</groupId>
 	<artifactId>hackathon-speakers</artifactId>
-	<version>0.0.1</version>
+	<version>1.0.0</version>
 
 	<properties>
 		<!-- use UTF-8 for everything -->
