@@ -8,6 +8,10 @@ import org.slf4j.LoggerFactory;
 import com.google.common.base.Strings;
 
 public class SpeakUtil {
+    public enum SpeakType {
+        ST_FESTIVAL, ST_ESPEAK, ST_ESPEAK_FILE;
+    }
+
     private static final Logger logger = LoggerFactory.getLogger(SpeakUtil.class);
     private static final String FESTIVAL = "echo \"%s\" | festival --tts";
     private static final String ESPEAK = "espeak -ven+f3 -k5 -s150 \"%s\"";
@@ -15,7 +19,21 @@ public class SpeakUtil {
     private static final int MAX_LENGTH = 150;
 
     public static void speak(String text, String userName) {
-        espeakFile(text, userName);
+        speak(text, userName, SpeakType.ST_ESPEAK_FILE);
+    }
+
+    public static void speak(String text, String userName, SpeakType speakType) {
+        switch (speakType) {
+        case ST_FESTIVAL:
+            festival(text, userName);
+            break;
+        case ST_ESPEAK:
+            espeak(text, userName);
+            break;
+        case ST_ESPEAK_FILE:
+            espeakFile(text, userName);
+            break;
+        }
     }
 
     private static void festival(String text, String userName) {
