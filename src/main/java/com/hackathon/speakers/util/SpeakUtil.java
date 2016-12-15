@@ -111,6 +111,7 @@ public class SpeakUtil {
                 try {
                     OSUtil.runCommand(command);
                 } catch (Exception e) {
+                    logger.error("Failed saying {}.", text, e);
                 }
             }
         });
