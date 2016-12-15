@@ -20,9 +20,9 @@ import com.hackathon.speakers.data.play.PlayFileRequest;
 @Path("/hackathon/v1/play")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.TEXT_PLAIN)
-public class PlayMP3FileResource
+public class PlayAudioFileResource
 {
-    private static final Logger logger = LoggerFactory.getLogger(PlayMP3FileResource.class);
+    private static final Logger logger = LoggerFactory.getLogger(PlayAudioFileResource.class);
     
     private static final String MUSIC_PATH = "/home/pi/Music/";
     

@@ -9,7 +9,7 @@ import org.eclipse.jetty.servlets.CrossOriginFilter;
 
 import com.hackathon.speakers.health.SpeakHealthCheck;
 import com.hackathon.speakers.resources.diag.PingStorageResource;
-import com.hackathon.speakers.resources.play.PlayMP3FileResource;
+import com.hackathon.speakers.resources.play.PlayAudioFileResource;
 import com.hackathon.speakers.resources.speak.SimpleSpeakResource;
 
 import io.dropwizard.Application;
@@ -39,7 +39,7 @@ public class HackathonSpeakersMain extends Application<HackathonSpeakersConfigur
 
         environment.jersey().register(new PingStorageResource());
         environment.jersey().register(new SimpleSpeakResource());
-        environment.jersey().register(new PlayMP3FileResource());
+        environment.jersey().register(new PlayAudioFileResource());
         
         environment.healthChecks().register("speak", new SpeakHealthCheck());
     }
