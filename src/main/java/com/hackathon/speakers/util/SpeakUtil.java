@@ -38,7 +38,12 @@ public class SpeakUtil {
 
     private static void festival(String text, String userName) {
         try {
-            String actualText = safeText(text);
+            String actualText = getTextToSay(text, userName);
+
+            if (Strings.isNullOrEmpty(actualText)) {
+                return;
+            }
+
             doSpeak(String.format(FESTIVAL, actualText), actualText, userName);
         } catch (Exception e) {
             logger.error("Failed to festival.", e);
@@ -47,7 +52,12 @@ public class SpeakUtil {
 
     private static void espeak(String text, String userName) {
         try {
-            String actualText = safeText(text);
+            String actualText = getTextToSay(text, userName);
+
+            if (Strings.isNullOrEmpty(actualText)) {
+                return;
+            }
+
             doSpeak(String.format(ESPEAK, actualText), actualText, userName);
         } catch (Exception e) {
             logger.error("Failed to espeak.", e);
@@ -56,7 +66,12 @@ public class SpeakUtil {
 
     private static void espeakFile(String text, String userName) {
         try {
-            String actualText = safeText(text);
+            String actualText = getTextToSay(text, userName);
+
+            if (Strings.isNullOrEmpty(actualText)) {
+                return;
+            }
+
             String filePath = FileUtil.writeToFile(actualText);
 
             if (filePath == null) {
@@ -69,10 +84,20 @@ public class SpeakUtil {
         }
     }
 
+    private static String getTextToSay(String text, String userName) {
+        String safeTextStr = safeText(text);
+
+        if (Strings.isNullOrEmpty(safeTextStr)) {
+            return null;
+        }
+
+        String intro = userName.replaceAll(".", " ") + " says ";
+        
+        return intro + safeTextStr;
+    }
+
     private static String safeText(String text) {
-        if (Strings.isNullOrEmpty(text)) {
-            return "";
-        } else if (text.length() <= MAX_LENGTH) {
+        if ((Strings.isNullOrEmpty(text)) || (text.length() <= MAX_LENGTH)) {
             return text;
         } else {
             return text.substring(0, MAX_LENGTH);
