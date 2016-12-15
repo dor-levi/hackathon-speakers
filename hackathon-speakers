@@ -1,0 +1,90 @@
+#!/bin/bash
+
+### BEGIN INIT INFO
+# Provides:          hackathon-speakers 
+# Required-Start:    $remote_fs $syslog
+# Required-Stop:     $remote_fs $syslog
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Start hackathon-speakers daemon
+### END INIT INFO
+
+SERVICE_NAME=hackathon-speakers
+HACKATHON_SPEAKERS_HOME=/opt/hackathon-speakers
+PATH_TO_JAR=$HACKATHON_SPEAKERS_HOME/lib/hackathon-speakers-1.0.0.jar
+PATH_TO_SETTINGS=$HACKATHON_SPEAKERS_HOME/settings.yml 
+LOG=$HACKATHON_SPEAKERS_HOME/log/hackathon-speakers.log
+JAVA_BIN=/usr/bin/java
+#JAVA_BIN=/usr/lib/jvm/java-7-openjdk-amd64/jre/bin/java
+PID=`ps -ef | grep hackathon-speakers | grep -v grep | awk {'print $2'} | head -1`
+
+function current_pid()
+{
+    TEMP_PID=`ps -ef | grep hackathon-speakers | grep -v grep | awk {'print $2'} | head -1`
+    echo $TEMP_PID
+    return $TEMP_PID
+}
+
+function do_stop()
+{
+    if ps -p $PID  > /dev/null  2>&1
+    then
+        echo "Stopping $SERVICE_NAME ..."
+        echo $PID
+        kill -9 $PID
+        echo "$SERVICE_NAME stopped ..."
+    else
+        echo "$SERVICE_NAME is not running ..."
+    fi
+}
+
+function do_start()
+{
+    echo "Starting $SERVICE_NAME ..."
+    
+    nohup $JAVA_BIN -jar $PATH_TO_JAR server $PATH_TO_SETTINGS > $LOG &
+    echo "$SERVICE_NAME started ..."
+}
+
+function do_status()
+{
+    if  ps -p  $PID > /dev/null  2>&1
+    then
+        return_value='true'
+    else
+        return_value='false'
+    fi
+    
+    echo $return_value
+}
+
+case $1 in
+    start)
+        do_start
+    ;;
+    stop)
+        do_stop
+    ;;
+    restart)
+        CURRENT_STATUS=$(do_status)
+        if $CURRENT_STATUS == 'true'
+        then
+            do_stop
+            do_start 
+        else
+            echo "$SERVICE_NAME is not running ..."
+        fi
+    ;;
+    status)
+        CURRENT_STATUS=$(do_status)
+        if $CURRENT_STATUS == 'true'
+        then
+            echo "$SERVICE_NAME running ..."
+            PID=$(current_pid)
+            echo $PID
+        else
+            echo "$SERVICE_NAME is not running ..."
+        fi
+    ;;
+esac
+
