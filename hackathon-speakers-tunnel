@@ -38,7 +38,7 @@ function do_start()
 {
     echo "Starting $SERVICE_NAME ..."
     
-    nohup lt -p $TUNNEL_PORT -s TUNNEL_SUB_DOMAIN > /dev/null
+    nohup lt -p $TUNNEL_PORT -s $TUNNEL_SUB_DOMAIN > /dev/null &
     echo "$SERVICE_NAME started ..."
 }
 
