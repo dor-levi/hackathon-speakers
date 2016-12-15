@@ -1,7 +1,5 @@
 package com.hackathon.speakers.resources.play;
 
-import java.io.IOException;
-
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -16,6 +14,7 @@ import org.slf4j.LoggerFactory;
 
 import com.codahale.metrics.annotation.Timed;
 import com.hackathon.speakers.data.play.PlayFileRequest;
+import com.hackathon.speakers.util.AudioUtil;
 
 @Path("/hackathon/v1/play/audio")
 @Consumes(MediaType.APPLICATION_JSON)
@@ -23,13 +22,11 @@ import com.hackathon.speakers.data.play.PlayFileRequest;
 public class PlayAudioFileResource {
     private static final Logger logger = LoggerFactory.getLogger(PlayAudioFileResource.class);
 
-    private static final String MUSIC_PATH = "/home/pi/Music/";
-
     @GET
     @Timed
     public Response get(@QueryParam("text") String text) {
         try {
-            playFile(text);
+            AudioUtil.playFile(text);
 
             return Response.ok("ok").build();
         } catch (Exception e) {
@@ -42,20 +39,12 @@ public class PlayAudioFileResource {
     @Timed
     public Response post(PlayFileRequest request) {
         try {
-            playFile(request.text);
+            AudioUtil.playFile(request.text);
 
             return Response.ok("ok").build();
         } catch (Exception e) {
             logger.error("Could not reply to ping request", e);
             return Response.serverError().entity("Could not reply to ping request").build();
-        }
-    }
-
-    private void playFile(String filename) {
-        try {
-            Runtime.getRuntime().exec("omxplayer -o local " + MUSIC_PATH + filename);
-        } catch (IOException e) {
-            logger.error("Failed playing file ({})", filename);
         }
     }
 }
