@@ -1,9 +1,5 @@
 package com.hackathon.speakers;
 
-import io.dropwizard.Application;
-import io.dropwizard.setup.Bootstrap;
-import io.dropwizard.setup.Environment;
-
 import java.util.EnumSet;
 
 import javax.servlet.DispatcherType;
@@ -13,7 +9,12 @@ import org.eclipse.jetty.servlets.CrossOriginFilter;
 
 import com.hackathon.speakers.health.SpeakHealthCheck;
 import com.hackathon.speakers.resources.diag.PingStorageResource;
+import com.hackathon.speakers.resources.play.PlayMP3FileResource;
 import com.hackathon.speakers.resources.speak.SimpleSpeakResource;
+
+import io.dropwizard.Application;
+import io.dropwizard.setup.Bootstrap;
+import io.dropwizard.setup.Environment;
 
 public class HackathonSpeakersMain extends Application<HackathonSpeakersConfiguration> {
     public static void main(String[] args) throws Exception {
@@ -38,6 +39,7 @@ public class HackathonSpeakersMain extends Application<HackathonSpeakersConfigur
 
         environment.jersey().register(new PingStorageResource());
         environment.jersey().register(new SimpleSpeakResource());
+        environment.jersey().register(new PlayMP3FileResource());
         
         environment.healthChecks().register("speak", new SpeakHealthCheck());
     }
