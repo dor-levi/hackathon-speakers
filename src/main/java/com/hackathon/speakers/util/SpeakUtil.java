@@ -91,7 +91,7 @@ public class SpeakUtil {
             return null;
         }
 
-        String intro = userName.replaceAll(".", " ") + " says ";
+        String intro = userName.replaceAll("\\.", " ") + " says ";
         
         return intro + safeTextStr;
     }
