@@ -1,18 +1,19 @@
 package com.hackathon.speakers.util;
 
-import java.io.IOException;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Strings;
+import com.hackathon.speakers.util.thread.TaskExecutor;
 
 public class SpeakUtil {
     public enum SpeakType {
         ST_FESTIVAL, ST_ESPEAK, ST_ESPEAK_FILE;
     }
 
-    private static final Logger logger = LoggerFactory.getLogger(SpeakUtil.class);
+    private static final TaskExecutor executor = new TaskExecutor("SpeakExecutor", 1, 10, 30, Thread.MAX_PRIORITY, null);
+
+    protected static final Logger logger = LoggerFactory.getLogger(SpeakUtil.class);
     private static final String FESTIVAL = "echo \"%s\" | festival --tts";
     private static final String ESPEAK = "espeak -ven+f3 -k5 -s150 \"%s\"";
     private static final String ESPEAK_FILE = "espeak -ven+f3 -k5 -s150 -f %s";
@@ -92,7 +93,7 @@ public class SpeakUtil {
         }
 
         String intro = userName.replaceAll("\\.", " ") + " says ";
-        
+
         return intro + safeTextStr;
     }
 
@@ -104,9 +105,16 @@ public class SpeakUtil {
         }
     }
 
-    private static void doSpeak(String command, String text) throws InterruptedException, IOException {
-        logger.info(text);
-
-        OSUtil.runCommand(command);
+    private static void doSpeak(final String command, final String text) {
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                logger.info(text);
+                try {
+                    OSUtil.runCommand(command);
+                } catch (Exception e) {
+                }
+            }
+        });
     }
 }
