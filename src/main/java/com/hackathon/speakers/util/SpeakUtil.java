@@ -31,7 +31,7 @@ public class SpeakUtil {
     }
 
     private static void runCommand(String command) throws InterruptedException, IOException {
-        logger.debug("About to run - " + command);
+        logger.info("About to run - " + command);
         
         Process process = Runtime.getRuntime().exec(command);
         process.waitFor();
