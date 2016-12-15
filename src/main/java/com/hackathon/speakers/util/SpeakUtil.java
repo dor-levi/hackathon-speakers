@@ -1,5 +1,7 @@
 package com.hackathon.speakers.util;
 
+import java.io.IOException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,35 +14,38 @@ public class SpeakUtil {
     private static final String ESPEAK_FILE = "espeak -ven+f3 -k5 -s150 -f %s";
     private static final int MAX_LENGTH = 150;
 
-    public static void speak(String text) {
-        espeakFile(text);
+    public static void speak(String text, String userName) {
+        espeakFile(text, userName);
     }
 
-    private static void festival(String text) {
+    private static void festival(String text, String userName) {
         try {
-            OSUtil.runCommand(String.format(ESPEAK, safeText(text)));
+            String actualText = safeText(text);
+            doSpeak(String.format(FESTIVAL, actualText), actualText, userName);
         } catch (Exception e) {
             logger.error("Failed to festival.", e);
         }
     }
 
-    private static void espeak(String text) {
+    private static void espeak(String text, String userName) {
         try {
-            OSUtil.runCommand(String.format(ESPEAK, safeText(text)));
+            String actualText = safeText(text);
+            doSpeak(String.format(ESPEAK, actualText), actualText, userName);
         } catch (Exception e) {
             logger.error("Failed to espeak.", e);
         }
     }
 
-    private static void espeakFile(String text) {
+    private static void espeakFile(String text, String userName) {
         try {
-            String filePath = FileUtil.writeToFile(safeText(text));
+            String actualText = safeText(text);
+            String filePath = FileUtil.writeToFile(actualText);
 
             if (filePath == null) {
                 logger.warn("Unable to create temp file");
             }
 
-            OSUtil.runCommand(String.format(ESPEAK_FILE, filePath));
+            doSpeak(String.format(ESPEAK_FILE, filePath), actualText, userName);
         } catch (Exception e) {
             logger.error("Failed to espeak.", e);
         }
@@ -54,5 +59,11 @@ public class SpeakUtil {
         } else {
             return text.substring(0, MAX_LENGTH);
         }
+    }
+
+    private static void doSpeak(String command, String text, String userName) throws InterruptedException, IOException {
+        logger.info("{} going to say {}.", userName, text);
+
+        OSUtil.runCommand(command);
     }
 }

@@ -11,7 +11,7 @@ public class SpeakTest {
     @Test
     public void testSimpleSpeak() {
         try {
-            SpeakUtil.speak("Testing speaking capabilities");
+            SpeakUtil.speak("Testing speaking capabilities", "Test");
         } catch (Exception e) {
             e.printStackTrace();
             fail();

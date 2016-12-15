@@ -11,7 +11,7 @@ public class SpeakHealthCheck extends HealthCheck {
     @Override
     protected Result check() {
         try {
-            SpeakUtil.speak("Speak health check");
+            SpeakUtil.speak("Speak health check", "Health Check");
             return Result.healthy();
         } catch (Exception e) {
             return Result.unhealthy("Problem with speak");
