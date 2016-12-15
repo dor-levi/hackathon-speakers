@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 
 import com.codahale.metrics.annotation.Timed;
 import com.hackathon.speakers.data.speak.SimpleSpeakRequest;
+import com.hackathon.speakers.util.SpeakUtil;
 
 @Path("/hackathon/v1/speak/simple")
 @Consumes(MediaType.APPLICATION_JSON)
@@ -25,7 +26,7 @@ public class SimpleSpeakResource {
 	@Timed
 	public Response get(@QueryParam("text") String text) {
 		try {
-		    speak(text);
+		    SpeakUtil.speak(text);
 		    
 			return Response.ok("ok").build();
 		} catch (Exception e) {
@@ -38,7 +39,7 @@ public class SimpleSpeakResource {
     @Timed
     public Response post(SimpleSpeakRequest request) {
         try {
-            speak(request.text);
+            SpeakUtil.speak(request.text);
 
             return Response.ok("ok").build();
         } catch (Exception e) {
@@ -46,8 +47,4 @@ public class SimpleSpeakResource {
             return Response.serverError().entity("Could not reply to ping request").build();
         }
     }
-	
-	private void speak(String text) {
-	    logger.info(text);
-	}
 }
