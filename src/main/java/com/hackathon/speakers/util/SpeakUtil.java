@@ -4,14 +4,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Strings;
-import com.hackathon.speakers.util.thread.TaskExecutor;
+import com.hackathon.speakers.util.thread.TaskExecutors;
 
 public class SpeakUtil {
     public enum SpeakType {
         ST_FESTIVAL, ST_ESPEAK, ST_ESPEAK_FILE;
     }
-
-    private static final TaskExecutor executor = new TaskExecutor("SpeakExecutor", 1, 10, 30, Thread.MAX_PRIORITY, null);
 
     protected static final Logger logger = LoggerFactory.getLogger(SpeakUtil.class);
     private static final String FESTIVAL = "echo \"%s\" | festival --tts";
@@ -106,7 +104,7 @@ public class SpeakUtil {
     }
 
     private static void doSpeak(final String command, final String text) {
-        executor.execute(new Runnable() {
+        TaskExecutors.speak.execute(new Runnable() {
             @Override
             public void run() {
                 logger.info(text);
