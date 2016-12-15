@@ -17,7 +17,7 @@ import org.slf4j.LoggerFactory;
 import com.codahale.metrics.annotation.Timed;
 import com.hackathon.speakers.data.play.PlayFileRequest;
 
-@Path("/hackathon/v1/play")
+@Path("/hackathon/v1/play/audio")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.TEXT_PLAIN)
 public class PlayAudioFileResource
