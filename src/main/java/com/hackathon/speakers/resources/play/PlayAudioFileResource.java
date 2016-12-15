@@ -20,54 +20,41 @@ import com.hackathon.speakers.data.play.PlayFileRequest;
 @Path("/hackathon/v1/play/audio")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.TEXT_PLAIN)
-public class PlayAudioFileResource
-{
+public class PlayAudioFileResource {
     private static final Logger logger = LoggerFactory.getLogger(PlayAudioFileResource.class);
-    
+
     private static final String MUSIC_PATH = "/home/pi/Music/";
-    
+
     @GET
     @Timed
-    public Response get(@QueryParam("text") String text)
-    {
-        try
-        {
+    public Response get(@QueryParam("text") String text) {
+        try {
             playFile(text);
-            
+
             return Response.ok("ok").build();
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             logger.error("Could not reply to ping request", e);
             return Response.serverError().entity("Could not reply to ping request").build();
         }
     }
-    
+
     @POST
     @Timed
-    public Response post(PlayFileRequest request)
-    {
-        try
-        {
+    public Response post(PlayFileRequest request) {
+        try {
             playFile(request.text);
 
             return Response.ok("ok").build();
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             logger.error("Could not reply to ping request", e);
             return Response.serverError().entity("Could not reply to ping request").build();
         }
     }
-    
-    private void playFile(String filename)
-    {
-        try
-        {
+
+    private void playFile(String filename) {
+        try {
             Runtime.getRuntime().exec("omxplayer -o local " + MUSIC_PATH + filename);
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             logger.error("Failed playing file ({})", filename);
         }
     }
