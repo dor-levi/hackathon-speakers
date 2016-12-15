@@ -4,4 +4,4 @@ sudo git pull
 
 sudo ~/maven/bin/mvn package
 
-java -jar target/hackathons-speakers-1.0.0.jar server settings.yml
+java -jar target/hackathon-speakers-1.0.0.jar server settings.yml
