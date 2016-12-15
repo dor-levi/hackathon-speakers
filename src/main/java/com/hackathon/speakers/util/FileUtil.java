@@ -10,7 +10,7 @@ public class FileUtil {
         try {
             File temp = File.createTempFile("tempfile", ".tmp");
             BufferedWriter bw = new BufferedWriter(new FileWriter(temp));
-            bw.write("text");
+            bw.write(text);
             bw.close();
             return temp.getAbsolutePath();
         } catch (IOException e) {
