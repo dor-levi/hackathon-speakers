@@ -1,7 +1,5 @@
 package com.hackathon.speakers.util;
 
-import java.io.IOException;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,7 +15,7 @@ public class SpeakUtil {
 
     private static void festival(String text) {
         try {
-            runCommand(String.format(ESPEAK, text));
+            OSUtil.runCommand(String.format(ESPEAK, text));
         } catch (Exception e) {
             logger.error("Failed to festival.", e);
         }
@@ -25,7 +23,7 @@ public class SpeakUtil {
 
     private static void espeak(String text) {
         try {
-            runCommand(String.format(ESPEAK, text));
+            OSUtil.runCommand(String.format(ESPEAK, text));
         } catch (Exception e) {
             logger.error("Failed to espeak.", e);
         }
@@ -39,16 +37,9 @@ public class SpeakUtil {
                 logger.warn("Unable to create temp file");
             }
             
-            runCommand(String.format(ESPEAK_FILE, filePath));
+            OSUtil.runCommand(String.format(ESPEAK_FILE, filePath));
         } catch (Exception e) {
             logger.error("Failed to espeak.", e);
         }
-    }
-
-    private static void runCommand(String command) throws InterruptedException, IOException {
-        logger.info("About to run - " + command);
-
-        Process process = Runtime.getRuntime().exec(command);
-        process.waitFor();
     }
 }
