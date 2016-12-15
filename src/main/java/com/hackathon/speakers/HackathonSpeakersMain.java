@@ -21,7 +21,7 @@ public class HackathonSpeakersMain extends Application<HackathonSpeakersConfigur
 
     @Override
     public String getName() {
-        return "takipi-storage";
+        return "hackathon-storage";
     }
 
     @Override
