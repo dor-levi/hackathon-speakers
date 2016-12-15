@@ -11,6 +11,7 @@ import javax.servlet.FilterRegistration;
 
 import org.eclipse.jetty.servlets.CrossOriginFilter;
 
+import com.hackathon.speakers.health.SpeakHealthCheck;
 import com.hackathon.speakers.resources.diag.PingStorageResource;
 import com.hackathon.speakers.resources.speak.SimpleSpeakResource;
 
@@ -38,7 +39,7 @@ public class HackathonSpeakersMain extends Application<HackathonSpeakersConfigur
         environment.jersey().register(new PingStorageResource());
         environment.jersey().register(new SimpleSpeakResource());
         
-//        environment.healthChecks().register("filesystem", new TodoHealthCheck(configuration));
+        environment.healthChecks().register("speak", new SpeakHealthCheck());
     }
 
     private void enableCors(HackathonSpeakersConfiguration configuration, Environment environment) {
