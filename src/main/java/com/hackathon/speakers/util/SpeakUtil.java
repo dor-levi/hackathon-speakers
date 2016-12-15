@@ -44,7 +44,7 @@ public class SpeakUtil {
                 return;
             }
 
-            doSpeak(String.format(FESTIVAL, actualText), actualText, userName);
+            doSpeak(String.format(FESTIVAL, actualText), actualText);
         } catch (Exception e) {
             logger.error("Failed to festival.", e);
         }
@@ -58,7 +58,7 @@ public class SpeakUtil {
                 return;
             }
 
-            doSpeak(String.format(ESPEAK, actualText), actualText, userName);
+            doSpeak(String.format(ESPEAK, actualText), actualText);
         } catch (Exception e) {
             logger.error("Failed to espeak.", e);
         }
@@ -78,7 +78,7 @@ public class SpeakUtil {
                 logger.warn("Unable to create temp file");
             }
 
-            doSpeak(String.format(ESPEAK_FILE, filePath), actualText, userName);
+            doSpeak(String.format(ESPEAK_FILE, filePath), actualText);
         } catch (Exception e) {
             logger.error("Failed to espeak.", e);
         }
@@ -104,8 +104,8 @@ public class SpeakUtil {
         }
     }
 
-    private static void doSpeak(String command, String text, String userName) throws InterruptedException, IOException {
-        logger.info("{} going to say {}.", userName, text);
+    private static void doSpeak(String command, String text) throws InterruptedException, IOException {
+        logger.info(text);
 
         OSUtil.runCommand(command);
     }
